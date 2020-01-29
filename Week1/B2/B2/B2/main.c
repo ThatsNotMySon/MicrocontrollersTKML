@@ -53,4 +53,6 @@ int main (void)
 		PORTD = 0x00;			// Write 01010101b PORTD
 		wait( 500 );				
 	}
+	
+	return 1;
 }
