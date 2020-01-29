@@ -28,7 +28,7 @@
 /*
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
-#include <asf.h>
+
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -41,9 +41,7 @@ void wait( int ms )
 }
 
 int main (void)
-{
-	board_init();
-	
+{	
 	DDRD = 0b11111111;			// All pins PORTD are set to output 
 	
 	while (1)
