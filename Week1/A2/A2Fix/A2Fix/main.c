@@ -29,6 +29,8 @@
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 
+#define F_CPU 8e6
+
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -47,8 +49,8 @@ int main (void)
 	while (1)
 	{
 		PORTD = 0xAA;			// Write 10101010b PORTD
-		wait( 250 );				
+		wait( 1000 );				
 		PORTD = 0x55;			// Write 01010101b PORTD
-		wait( 250 );				
+		wait( 1000 );				
 	}
 }
