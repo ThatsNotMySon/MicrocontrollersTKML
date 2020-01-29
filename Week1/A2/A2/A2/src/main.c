@@ -42,8 +42,6 @@ void wait( int ms )
 
 int main (void)
 {
-	/* Insert system clock initialization code here (sysclk_init()). */
-
 	board_init();
 	
 	DDRD = 0b11111111;			// All pins PORTD are set to output 
@@ -55,6 +53,4 @@ int main (void)
 		PORTD = 0x55;			// Write 01010101b PORTD
 		wait( 250 );				
 	}
-
-	/* Insert application code here, after the board has been initialized. */
 }
