@@ -38,21 +38,21 @@ void wait( int ms )
 {
 	for (int i=0; i<ms; i++)
 	{
-		if(PINC & 0x01) {
-		_delay_ms( 1 );		// library function (max 30 ms at 8MHz)
-		}
+		_delay_ms( 1 );		
 	}
 }
 
 int main (void)
 {	
-	DDRD = 0b11111111;			// All pins PORTD are set to output 
-	DDRC = 0b00000000;
+	DDRD = 0xFF;
+	DDRC = 0x00;
+	PORTD &= ~0x80;
 	
 	while (1)
 	{
-		if (PINC & 0x80) {
-		PORTD = 0x80;			// Write 10101010b PORTD
+		if (PINC & 0xFF) {
+			wait(200);
+			PORTD ^= 0x80;
 		}
 		else {
 			PORTD = 0x00;
