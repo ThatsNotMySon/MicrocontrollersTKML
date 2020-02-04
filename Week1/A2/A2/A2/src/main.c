@@ -28,9 +28,7 @@
 /*
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
-
-#define F_CPU 8e6
-
+#include <asf.h>
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -43,21 +41,16 @@ void wait( int ms )
 }
 
 int main (void)
-{	
-	DDRD = 0b01111111;					// PORTD.7 input all other bits output 
-	PORTC = 0x10;						// ??		
+{
+	board_init();
+	
+	DDRD = 0b11111111;			// All pins PORTD are set to output 
 	
 	while (1)
 	{
-		if (PINC & 0x80) 
-		{
-			PORTD = 0x01;				// write 1 to all the bits of PortD
-		}
-		else 
-		{
-			PORTD = 0x00;				// write 0 to all the bits of PortD
-		}
+		PORTD = 0xAA;			// Write 10101010b PORTD
+		wait( 250 );				
+		PORTD = 0x55;			// Write 01010101b PORTD
+		wait( 250 );				
 	}
-
-	return 1;
 }
