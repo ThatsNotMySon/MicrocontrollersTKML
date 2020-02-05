@@ -96,7 +96,6 @@ void doEnd(){
 }
 
 void handleInput(MPORT mPort){
-	
 	currentState = fsm[mPort][currentState].destinationState;
 	
 	switch(currentState){
@@ -130,21 +129,25 @@ void wait( int ms )
 int main (void)
 {
 	DDRD = 0x0F; //Eerste vier bits is output en laatste vier is input
-
+	
+	handleInput(P7);
 	while (1)
 	{
-		if (PINC ^ 0x20) //PD5
+		if (PIND & 0x20) //PD5
 		{
 			handleInput(P5);
+	
 		} 
-		else if (PINC ^ 0x40) //PD6
+		else if (PIND & 0x40) //PD6
 		{
 			handleInput(P6);
+			
 		} 
-		else if (PINC ^ 0x80) //PD7
+		else if (PIND & 0x80) //PD7
 		{
 			handleInput(P7);
 		}
+		wait(250);
 	}
 	
 	return 1;
