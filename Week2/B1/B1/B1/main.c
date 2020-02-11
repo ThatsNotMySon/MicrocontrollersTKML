@@ -74,11 +74,11 @@ Version :    	DMK, Initial code
 *******************************************************************/
 {
 	// Init I/O
-	DDRD = 0xF0;			// PORTD(7:4) output, PORTD(3:0) input	
+	DDRD = 0xF0;			// PORTD(7:4) output, PORTD(3:0) input	0b11110000
 
 	// Init Interrupt hardware
-	EICRA |= 0x0B;			// INT1 falling edge, INT0 rising edge
-	EIMSK |= 0x03;			// Enable INT1 & INT0
+	EICRA |= 0x0B;			// INT1 falling edge, INT0 rising edge 0b00001011
+	EIMSK |= 0x03;			// Enable INT1 & INT0					0b00000011
 	
 	// Enable global interrupt system
 	//SREG = 0x80;			// Of direct via SREG of via wrapper
@@ -86,7 +86,7 @@ Version :    	DMK, Initial code
 
 	while (1)
 	{
-		PORTD ^= (1<<7);	// Toggle PORTD.7
+		PORTD ^= (1<<7);	// Toggle PORTD.7 0b00000001 0b10000000
 		wait( 500 );								
 	}
 
