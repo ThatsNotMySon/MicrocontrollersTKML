@@ -89,16 +89,22 @@ int main(void)
 {
 	/* Replace with your application code */
 	DDRC = 0xFF;
+	DDRD = 0x00;
 	
-	PORTC = 0;
+	int count = 0;
 	
-	for(int i =0;i <= 16;i++ ){
-		display(i);
-		wait(1000);
-	}
 	
 	while (1)
 	{
+		if(PIND & 0x01){
+			count++;
+		}else if(PIND & 0x02){
+			count--;
+		}else if (PIND & 0x03) {
+			count = 0;
+		}
+		display(count);
+		wait(200);
 	}
 
 }

@@ -3,29 +3,29 @@ B3.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000001dc  2**0
+  0 .data         00000000  00800100  00800100  000001ee  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000188  00000000  00000000  00000054  2**1
+  1 .text         0000019a  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000001dc  2**0
+  2 .comment      00000030  00000000  00000000  000001ee  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000020c  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000220  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000030  00000000  00000000  00000248  2**0
+  4 .debug_aranges 00000030  00000000  00000000  0000025c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000093c  00000000  00000000  00000278  2**0
+  5 .debug_info   00000933  00000000  00000000  0000028c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000083f  00000000  00000000  00000bb4  2**0
+  6 .debug_abbrev 0000084e  00000000  00000000  00000bbf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   0000039f  00000000  00000000  000013f3  2**0
+  7 .debug_line   000003b7  00000000  00000000  0000140d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000044  00000000  00000000  00001794  2**2
+  8 .debug_frame  00000044  00000000  00000000  000017c4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000427  00000000  00000000  000017d8  2**0
+  9 .debug_str    0000042d  00000000  00000000  00001808  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000294  00000000  00000000  00001bff  2**0
+ 10 .debug_loc    00000294  00000000  00000000  00001c35  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000020  00000000  00000000  00001e93  2**0
+ 11 .debug_ranges 00000020  00000000  00000000  00001ec9  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -126,7 +126,7 @@ Disassembly of section .text:
   b4:	de bf       	out	0x3e, r29	; 62
   b6:	cd bf       	out	0x3d, r28	; 61
   b8:	4d d0       	rcall	.+154    	; 0x154 <main>
-  ba:	64 c0       	rjmp	.+200    	; 0x184 <_exit>
+  ba:	6d c0       	rjmp	.+218    	; 0x196 <_exit>
 
 000000bc <__bad_interrupt>:
   bc:	a1 cf       	rjmp	.-190    	; 0x0 <__vectors>
@@ -175,7 +175,7 @@ void display(int digit){
   e6:	fc 01       	movw	r30, r24
   e8:	ea 5b       	subi	r30, 0xBA	; 186
   ea:	ff 4f       	sbci	r31, 0xFF	; 255
-  ec:	42 c0       	rjmp	.+132    	; 0x172 <__tablejump2__>
+  ec:	4b c0       	rjmp	.+150    	; 0x184 <__tablejump2__>
 		case 0:
 			PORTC = zero;
   ee:	8e e7       	ldi	r24, 0x7E	; 126
@@ -287,45 +287,59 @@ int main(void)
 	DDRC = 0xFF;
  154:	8f ef       	ldi	r24, 0xFF	; 255
  156:	84 bb       	out	0x14, r24	; 20
+	DDRD = 0x00;
+ 158:	11 ba       	out	0x11, r1	; 17
 	
-	PORTC = 0;
- 158:	15 ba       	out	0x15, r1	; 21
-	
-	for(int i =0;i <= 16;i++ ){
+	int count = 0;
  15a:	c0 e0       	ldi	r28, 0x00	; 0
  15c:	d0 e0       	ldi	r29, 0x00	; 0
-		display(i);
- 15e:	ce 01       	movw	r24, r28
- 160:	bf df       	rcall	.-130    	; 0xe0 <display>
-		wait(1000);
- 162:	88 ee       	ldi	r24, 0xE8	; 232
- 164:	93 e0       	ldi	r25, 0x03	; 3
- 166:	ab df       	rcall	.-170    	; 0xbe <wait>
-	/* Replace with your application code */
-	DDRC = 0xFF;
 	
-	PORTC = 0;
 	
-	for(int i =0;i <= 16;i++ ){
- 168:	21 96       	adiw	r28, 0x01	; 1
- 16a:	c1 31       	cpi	r28, 0x11	; 17
- 16c:	d1 05       	cpc	r29, r1
- 16e:	b9 f7       	brne	.-18     	; 0x15e <main+0xa>
- 170:	ff cf       	rjmp	.-2      	; 0x170 <main+0x1c>
+	while (1)
+	{
+		if(PIND & 0x01){
+ 15e:	80 9b       	sbis	0x10, 0	; 16
+ 160:	02 c0       	rjmp	.+4      	; 0x166 <main+0x12>
+			count++;
+ 162:	21 96       	adiw	r28, 0x01	; 1
+ 164:	09 c0       	rjmp	.+18     	; 0x178 <main+0x24>
+		}else if(PIND & 0x02){
+ 166:	81 9b       	sbis	0x10, 1	; 16
+ 168:	02 c0       	rjmp	.+4      	; 0x16e <main+0x1a>
+			count--;
+ 16a:	21 97       	sbiw	r28, 0x01	; 1
+ 16c:	05 c0       	rjmp	.+10     	; 0x178 <main+0x24>
+		}else if (PIND & 0x03) {
+ 16e:	80 b3       	in	r24, 0x10	; 16
+ 170:	83 70       	andi	r24, 0x03	; 3
+ 172:	11 f0       	breq	.+4      	; 0x178 <main+0x24>
+			count = 0;
+ 174:	c0 e0       	ldi	r28, 0x00	; 0
+ 176:	d0 e0       	ldi	r29, 0x00	; 0
+		}
+		display(count);
+ 178:	ce 01       	movw	r24, r28
+ 17a:	b2 df       	rcall	.-156    	; 0xe0 <display>
+		wait(200);
+ 17c:	88 ec       	ldi	r24, 0xC8	; 200
+ 17e:	90 e0       	ldi	r25, 0x00	; 0
+ 180:	9e df       	rcall	.-196    	; 0xbe <wait>
+	}
+ 182:	ed cf       	rjmp	.-38     	; 0x15e <main+0xa>
 
-00000172 <__tablejump2__>:
- 172:	ee 0f       	add	r30, r30
- 174:	ff 1f       	adc	r31, r31
- 176:	00 24       	eor	r0, r0
- 178:	00 1c       	adc	r0, r0
- 17a:	0b be       	out	0x3b, r0	; 59
- 17c:	07 90       	elpm	r0, Z+
- 17e:	f6 91       	elpm	r31, Z
- 180:	e0 2d       	mov	r30, r0
- 182:	09 94       	ijmp
+00000184 <__tablejump2__>:
+ 184:	ee 0f       	add	r30, r30
+ 186:	ff 1f       	adc	r31, r31
+ 188:	00 24       	eor	r0, r0
+ 18a:	00 1c       	adc	r0, r0
+ 18c:	0b be       	out	0x3b, r0	; 59
+ 18e:	07 90       	elpm	r0, Z+
+ 190:	f6 91       	elpm	r31, Z
+ 192:	e0 2d       	mov	r30, r0
+ 194:	09 94       	ijmp
 
-00000184 <_exit>:
- 184:	f8 94       	cli
+00000196 <_exit>:
+ 196:	f8 94       	cli
 
-00000186 <__stop_program>:
- 186:	ff cf       	rjmp	.-2      	; 0x186 <__stop_program>
+00000198 <__stop_program>:
+ 198:	ff cf       	rjmp	.-2      	; 0x198 <__stop_program>
