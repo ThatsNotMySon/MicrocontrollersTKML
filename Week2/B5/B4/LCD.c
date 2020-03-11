@@ -16,6 +16,14 @@ void lcd_display_text(char *str)
 	}
 }
 
+void lcd_clear(void)
+{
+	PORTC = 0x00;
+	lcd_e();
+	PORTC = 0x01;
+	lcd_e();
+}
+
 void lcd_e(void)
 {
 	PORTC |= (1<<LCD_E);	// E high
@@ -71,11 +79,7 @@ void lcd_init()
 	PORTC = 0xF0;
 	lcd_e();
 	
-	// clear screen
-	PORTC = 0x00;
-	lcd_e();
-	PORTC = 0x01;
-	lcd_e();
+	lcd_clear();
 
 	// Entry mode set
 	PORTC = 0x00;

@@ -15,6 +15,7 @@ void lcd_init();
 void lcd_display_text(char *str);
 void lcd_set_cursor(int position);
 void lcd_e(void);
+void lcd_clear(void);
 void lcd_write_char(unsigned char dat);
 
 #endif /* LCD_H_ */
